@@ -380,6 +380,8 @@ nfb_eth_dev_info(struct rte_eth_dev *dev,
 	dev_info->rx_offload_capa =
 		RTE_ETH_RX_OFFLOAD_TIMESTAMP;
 
+	dev_info->flow_type_rss_offloads = 0x3afbc;
+
 	if (internals->max_eth) {
 		nfb_ieee802_3_pma_pmd_get_speed_capa(&internals->eth_node[0].if_info,
 				&dev_info->speed_capa);
@@ -695,6 +697,12 @@ nfb_eth_fec_set(struct rte_eth_dev *dev, uint32_t fec_capa)
 	return ret;
 }
 
+static int
+nfb_eth_rss_update(struct rte_eth_dev *dev __rte_unused, struct rte_eth_rss_conf *rss_conf __rte_unused)
+{
+	return 0;
+}
+
 static const struct eth_dev_ops ops = {
 	.dev_start = nfb_eth_dev_start,
 	.dev_stop = nfb_eth_dev_stop,
@@ -721,6 +729,7 @@ static const struct eth_dev_ops ops = {
 	.mac_addr_set = nfb_eth_mac_addr_set,
 	.mac_addr_add = nfb_eth_mac_addr_add,
 	.mac_addr_remove = nfb_eth_mac_addr_remove,
+	.rss_hash_update = nfb_eth_rss_update,
 	.fw_version_get = nfb_eth_fw_version_get,
 	.fec_get = nfb_eth_fec_get,
 	.fec_set = nfb_eth_fec_set,
