@@ -11,6 +11,8 @@
 #include <nfb/ndp.h>
 #include <netcope/rxmac.h>
 #include <netcope/txmac.h>
+/* TODO: move queue map info to queue_mapper.h (can be unit in hw) */
+#include <netcope/info.h>
 
 extern int nfb_logtype;
 #define RTE_LOGTYPE_NFB nfb_logtype
@@ -50,7 +52,6 @@ struct pmd_internals {
 	int             *queue_map_rx;
 	int             *queue_map_tx;
 
-	char             nfb_dev[PATH_MAX];
 	struct nfb_device *nfb;
 };
 
@@ -59,4 +60,11 @@ struct pmd_priv {
 	int max_tx_queues;
 };
 
+struct nfb_init_params {
+	const char *path;
+	int nfb_id;
+
+	struct nc_ifc_map_info map_info;
+	struct nc_ifc_info *ifc_info;
+};
 #endif /* _NFB_H_ */
